@@ -17,7 +17,7 @@ public class Block {
         this.data = data;
         this.previousHash = previousHash;
         this.createdAt = new Date().getTime();
-        this.hash = BlockUtil.calculateHash(this);
+        this.hash = BlockUtils.calculateHash(this);
     }
 
     public Block setHash(String hash) {

@@ -8,6 +8,7 @@ libraryDependencies ++= Seq(
   // Uncomment to use Akka
   //"com.typesafe.akka" % "akka-actor_2.11" % "2.3.9",
   "com.google.code.gson" % "gson" % "2.8.5",
+  "org.bouncycastle" % "bcprov-jdk15on" % "1.59",
   "junit" % "junit" % "4.12" % "test",
   "com.novocode" % "junit-interface" % "0.11" % "test"
 )
