@@ -12,7 +12,7 @@ public final class WalletUtils {
 
     }
 
-    private static KeyPair generateKeyPair() {
+    public static KeyPair generateKeyPair() {
         try {
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA", "BC");
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
@@ -24,13 +24,6 @@ public final class WalletUtils {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static void createWalletKeyPair(Wallet wallet) {
-        KeyPair keyPair = generateKeyPair();
-        // Set the public and private keys from the keyPair
-        wallet.setPrivateKey(keyPair.getPrivate());
-        wallet.setPublicKey(keyPair.getPublic());
     }
 
     // Applies ECDSA Signature and returns the result ( as bytes ).

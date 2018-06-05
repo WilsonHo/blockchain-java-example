@@ -1,7 +1,7 @@
 package com.wilson.entrypoint;
 
-import com.wilson.blockchain.Transaction;
-import com.wilson.blockchain.TransactionUtils;
+import com.wilson.blockchain.transaction.Transaction;
+import com.wilson.blockchain.transaction.TransactionUtils;
 import com.wilson.blockchain.Wallet;
 import com.wilson.blockchain.WalletUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -20,9 +20,7 @@ public class WalletExample {
         Security.addProvider(new BouncyCastleProvider());
 
         walletTom = new Wallet();
-        WalletUtils.createWalletKeyPair(walletTom);
         walletBob = new Wallet();
-        WalletUtils.createWalletKeyPair(walletBob);
 
         // Test public and private keys
         System.out.println("Private and public keys:");
@@ -32,7 +30,8 @@ public class WalletExample {
         Transaction transaction = new Transaction(
                 walletTom.getPublicKey(),
                 walletBob.getPublicKey(),
-                5);
+                5,
+                null);
 
         byte[] signature = TransactionUtils.generateSignature(transaction, walletTom.getPrivateKey());
         transaction.setSignature(signature);

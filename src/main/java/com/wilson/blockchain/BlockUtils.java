@@ -1,8 +1,18 @@
 package com.wilson.blockchain;
 
+import com.wilson.blockchain.transaction.Transaction;
+import com.wilson.blockchain.transaction.TransactionInput;
+import com.wilson.blockchain.transaction.TransactionOutput;
+import com.wilson.blockchain.transaction.TransactionUtils;
+
 import java.security.*;
 import java.util.ArrayList;
-import java.util.Base64;
+import java.util.HashMap;
+import java.util.UUID;
+
+import static com.wilson.blockchain.DataStorage.blockchain;
+import static com.wilson.entrypoint.BlockchainExample.difficulty;
+import static com.wilson.entrypoint.BlockchainExample.genesisTransaction;
 
 /**
  * Created on 5/31/18.
@@ -34,7 +44,8 @@ public final class BlockUtils {
         String inputData = block.getPreviousHash()
                 + Long.toString(block.getCreatedAt())
                 + Integer.toString(block.getNonce())
-                + block.getData();
+                + block.getTransactionData()
+                + block.getMerkleRoot();
         return BlockUtils.applySha256(inputData);
     }
 
@@ -42,6 +53,10 @@ public final class BlockUtils {
         Block currentBlock;
         Block previousBlock;
         String hashTarget = new String(new char[difficulty]).replace('\0', '0');
+
+        HashMap<UUID, TransactionOutput> tempUTXOs = new HashMap<>(); //a temporary working list of unspent transactions at a given block state.
+        tempUTXOs.put(genesisTransaction.getOutputTransactions().get(0).getId(),
+                genesisTransaction.getOutputTransactions().get(0));
 
         for (int i = 1; i < blockchain.size(); i++) {
             currentBlock = blockchain.get(i);
@@ -62,6 +77,54 @@ public final class BlockUtils {
                 System.out.println("This block hasn't been mined");
                 return false;
             }
+
+            //loop thru blockchains transactions:
+            TransactionOutput tempOutput;
+            for (int t = 0; t < currentBlock.transactions.size(); t++) {
+                Transaction currentTransaction = currentBlock.transactions.get(t);
+
+                if (!TransactionUtils.verifySignature(currentTransaction)) {
+                    System.out.println("#Signature on Transaction(" + t + ") is Invalid");
+                    return false;
+                }
+                if (TransactionUtils.getInputsValue(currentTransaction)
+                        != TransactionUtils.getOutputsValue(currentTransaction)) {
+                    System.out.println("#Inputs are note equal to outputs on Transaction(" + t + ")");
+                    return false;
+                }
+
+                for (TransactionInput input : currentTransaction.getInputTransactions()) {
+                    tempOutput = tempUTXOs.get(input.getTransactionOutputId());
+
+                    if (tempOutput == null) {
+                        System.out.println("#Referenced input on Transaction(" + t + ") is Missing");
+                        return false;
+                    }
+
+                    if (input.getUtxo().getValue() != tempOutput.getValue()) {
+                        System.out.println("#Referenced input Transaction(" + t + ") value is Invalid");
+                        return false;
+                    }
+
+                    tempUTXOs.remove(input.getTransactionOutputId());
+                }
+
+                for (TransactionOutput output : currentTransaction.getOutputTransactions()) {
+                    tempUTXOs.put(output.getId(), output);
+                }
+
+//                if (currentTransaction.getOutputTransactions().get(0).g != currentTransaction.reciepient) {
+//                    System.out.println("#Transaction(" + t + ") output reciepient is not who it should be");
+//                    return false;
+//                }
+//                if (currentTransaction.outputs.get(1).reciepient != currentTransaction.sender) {
+//                    System.out.println("#Transaction(" + t + ") output 'change' is not sender.");
+//                    return false;
+//                }
+
+            }
+
+
         }
         return true;
     }
@@ -74,6 +137,11 @@ public final class BlockUtils {
                     .setHash(calculateHash(block));
         }
         System.out.println("Block Mined!!! : " + block.getHash());
+    }
+
+    public static void addBlock(Block newBlock) {
+        mineBlock(newBlock, difficulty);
+        blockchain.add(newBlock);
     }
 
 }
