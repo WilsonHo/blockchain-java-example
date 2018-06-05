@@ -8,7 +8,6 @@ import com.wilson.blockchain.WalletUtils;
 
 import java.security.PrivateKey;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import static com.wilson.blockchain.Configuration.DEFAULT_SEQUENCE;
 
@@ -118,20 +117,20 @@ public final class TransactionUtils {
 
     public static String getMerkleRoot(ArrayList<Transaction> transactions) {
         int count = transactions.size();
-        ArrayList<UUID> previousTreeLayer = new ArrayList<>();
+        ArrayList<String> previousTreeLayer = new ArrayList<>();
         for (Transaction transaction : transactions) {
             previousTreeLayer.add(transaction.getTransactionId());
         }
-        ArrayList<UUID> treeLayer = previousTreeLayer;
+        ArrayList<String> treeLayer = previousTreeLayer;
         while (count > 1) {
-            treeLayer = new ArrayList<UUID>();
+            treeLayer = new ArrayList<>();
             for (int i = 1; i < previousTreeLayer.size(); i++) {
                 String hashData = BlockUtils.applySha256(previousTreeLayer.get(i - 1).toString() + previousTreeLayer.get(i));
-                treeLayer.add(UUID.nameUUIDFromBytes(hashData.getBytes()));
+                treeLayer.add(hashData);
             }
             count = treeLayer.size();
             previousTreeLayer = treeLayer;
         }
-        return   (treeLayer.size() == 1) ? treeLayer.get(0).toString() : "";
+        return (treeLayer.size() == 1) ? treeLayer.get(0).toString() : "";
     }
 }

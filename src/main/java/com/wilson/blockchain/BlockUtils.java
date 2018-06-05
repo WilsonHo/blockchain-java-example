@@ -5,10 +5,9 @@ import com.wilson.blockchain.transaction.TransactionInput;
 import com.wilson.blockchain.transaction.TransactionOutput;
 import com.wilson.blockchain.transaction.TransactionUtils;
 
-import java.security.*;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 
 import static com.wilson.blockchain.DataStorage.blockchain;
 import static com.wilson.entrypoint.BlockchainExample.difficulty;
@@ -54,7 +53,7 @@ public final class BlockUtils {
         Block previousBlock;
         String hashTarget = new String(new char[difficulty]).replace('\0', '0');
 
-        HashMap<UUID, TransactionOutput> tempUTXOs = new HashMap<>(); //a temporary working list of unspent transactions at a given block state.
+        HashMap<String, TransactionOutput> tempUTXOs = new HashMap<>(); //a temporary working list of unspent transactions at a given block state.
         tempUTXOs.put(genesisTransaction.getOutputTransactions().get(0).getId(),
                 genesisTransaction.getOutputTransactions().get(0));
 

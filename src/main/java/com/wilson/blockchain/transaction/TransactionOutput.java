@@ -1,18 +1,13 @@
 package com.wilson.blockchain.transaction;
 
-import com.google.gson.Gson;
-import com.wilson.blockchain.BlockUtils;
-import com.wilson.blockchain.WalletUtils;
-
 import java.security.PublicKey;
-import java.util.UUID;
 
 /**
  * Created on 6/1/18.
  */
 public abstract class TransactionOutput {
-    protected UUID id;
-    protected UUID parentTransactionId; //the id of the transaction this output was created in
+    protected String id;
+    protected String parentTransactionId; //the id of the transaction this output was created in
     protected float value;
 
 
@@ -40,7 +35,7 @@ public abstract class TransactionOutput {
         return value;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 

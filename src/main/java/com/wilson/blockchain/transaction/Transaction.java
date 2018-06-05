@@ -2,13 +2,12 @@ package com.wilson.blockchain.transaction;
 
 import java.security.PublicKey;
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * Created on 5/31/18.
  */
 public class Transaction {
-    private UUID transactionId; // this is also the hash of the transaction.
+    private String transactionId; // this is also the hash of the transaction.
     private PublicKey sender; // senders address/public key.
     private PublicKey recipient; // Recipients address/public key.
     private float value;
@@ -26,7 +25,7 @@ public class Transaction {
         this.inputTransactions = inputs;
     }
 
-    public UUID getTransactionId() {
+    public String getTransactionId() {
         return transactionId;
     }
 
@@ -55,7 +54,7 @@ public class Transaction {
     }
 
     public void setTransactionId(String hashId) {
-        this.transactionId = UUID.nameUUIDFromBytes(hashId.getBytes());
+        this.transactionId = hashId;
     }
 
     public void setSignature(byte[] signature) {

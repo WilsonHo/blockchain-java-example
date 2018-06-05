@@ -1,7 +1,5 @@
 package com.wilson.blockchain.transaction;
 
-import java.util.UUID;
-
 /**
  * Created on 6/1/18.
  */
@@ -10,7 +8,7 @@ public class TransactionOutputData {
     private String recipient;
     private String value;
     private String leftOver;
-    private UUID parentTransactionId;
+    private String parentTransactionId;
 
 
     private TransactionOutputData() {
@@ -19,7 +17,7 @@ public class TransactionOutputData {
 
     public static TransactionOutputData generateTransactionOutputSenderData(String sender,
                                                                             String leftOver,
-                                                                            UUID parentTransactionId) {
+                                                                            String  parentTransactionId) {
         return new TransactionOutputData()
                 .setSender(sender)
                 .setLeftOver(leftOver)
@@ -30,7 +28,7 @@ public class TransactionOutputData {
 
     public static TransactionOutputData generateTransactionOutputRecipientData(String recipient,
                                                                                String value,
-                                                                               UUID parentTransactionId) {
+                                                                               String parentTransactionId) {
         return new TransactionOutputData()
                 .setSender("")
                 .setLeftOver("")
@@ -75,11 +73,11 @@ public class TransactionOutputData {
         return this;
     }
 
-    public UUID getParentTransactionId() {
+    public String getParentTransactionId() {
         return parentTransactionId;
     }
 
-    public TransactionOutputData setParentTransactionId(UUID parentTransactionId) {
+    public TransactionOutputData setParentTransactionId(String parentTransactionId) {
         this.parentTransactionId = parentTransactionId;
         return this;
     }

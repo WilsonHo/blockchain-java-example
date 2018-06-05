@@ -1,20 +1,17 @@
 package com.wilson.blockchain.transaction;
 
-import java.security.PublicKey;
-import java.util.UUID;
-
 /**
  * Created on 6/1/18.
  */
 public class TransactionInput {
-    private UUID transactionOutputId; //Reference to TransactionOutputs -> transactionId
+    private String transactionOutputId; //Reference to TransactionOutputs -> transactionId
     private TransactionOutput utxo; //Contains the Unspent transaction output
 
-    public TransactionInput(UUID transactionOutputId) {
+    public TransactionInput(String transactionOutputId) {
         this.transactionOutputId = transactionOutputId;
     }
 
-    public UUID getTransactionOutputId() {
+    public String getTransactionOutputId() {
         return transactionOutputId;
     }
 

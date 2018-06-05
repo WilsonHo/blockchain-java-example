@@ -11,7 +11,6 @@ import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 
 /**
@@ -21,7 +20,7 @@ public class Wallet {
     private PrivateKey privateKey;
     private PublicKey publicKey;
 
-    private HashMap<UUID, TransactionOutput> UTXOs = new HashMap<>(); //only UTXOs owned by this wallet.
+    private HashMap<String, TransactionOutput> UTXOs = new HashMap<>(); //only UTXOs owned by this wallet.
 
     public Wallet() {
         KeyPair keyPair = WalletUtils.generateKeyPair();
@@ -39,7 +38,7 @@ public class Wallet {
 
     public float getBalance() {
         float total = 0;
-        for (Map.Entry<UUID, TransactionOutput> item : DataStorage.UTXOs.entrySet()) {
+        for (Map.Entry<String, TransactionOutput> item : DataStorage.UTXOs.entrySet()) {
             TransactionOutput UTXO = item.getValue();
             if (UTXO.isMine(publicKey)) { // if output belongs to me ( if coins
                 // belong to me )
@@ -61,7 +60,7 @@ public class Wallet {
         ArrayList<TransactionInput> inputs = new ArrayList<>();
 
         float total = 0;
-        for (Map.Entry<UUID, TransactionOutput> item : UTXOs.entrySet()) {
+        for (Map.Entry<String, TransactionOutput> item : UTXOs.entrySet()) {
             TransactionOutput UTXO = item.getValue();
             total += UTXO.getValue();
             inputs.add(new TransactionInput(UTXO.getId()));

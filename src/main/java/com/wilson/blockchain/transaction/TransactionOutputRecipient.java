@@ -5,7 +5,6 @@ import com.wilson.blockchain.BlockUtils;
 import com.wilson.blockchain.WalletUtils;
 
 import java.security.PublicKey;
-import java.util.UUID;
 
 /**
  * Created on 6/1/18.
@@ -24,7 +23,7 @@ public class TransactionOutputRecipient extends TransactionOutput {
         );
         String hashData = new Gson().toJson(transactionOutputData);
         String hashId = BlockUtils.applySha256(hashData);
-        this.id = UUID.nameUUIDFromBytes(hashId.getBytes());
+        this.id =hashId;
     }
 
     //Check if coin belongs to you
