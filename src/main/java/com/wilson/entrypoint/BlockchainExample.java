@@ -76,11 +76,11 @@ public class BlockchainExample {
         System.out.println("\nWalletA's balance is: " + walletBob.getBalance());
         System.out.println("WalletB's balance is: " + walletTom.getBalance());
 
-//        Block block3 = new Block(block2.getHash());
-//        System.out.println("\nWalletB is Attempting to send funds (20) to WalletA...");
-//        block3.addTransaction(walletTom.sendFunds(walletBob.getPublicKey(), 20));
-//        System.out.println("\nWalletA's balance is: " + walletBob.getBalance());
-//        System.out.println("WalletB's balance is: " + walletTom.getBalance());
+        Block block3 = new Block(block2.getHash());
+        System.out.println("\nWalletB is Attempting to send funds (20) to WalletA...");
+        block3.addTransaction(walletTom.sendFunds(walletBob.getPublicKey(), 20));
+        System.out.println("\nWalletA's balance is: " + walletBob.getBalance());
+        System.out.println("WalletB's balance is: " + walletTom.getBalance());
 
         BlockUtils.isChainValid(blockchain, difficulty);
 

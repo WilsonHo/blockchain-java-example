@@ -23,7 +23,7 @@ public class TransactionOutputRecipient extends TransactionOutput {
         );
         String hashData = new Gson().toJson(transactionOutputData);
         String hashId = BlockUtils.applySha256(hashData);
-        this.id =hashId;
+        this.id = hashId;
     }
 
     //Check if coin belongs to you
