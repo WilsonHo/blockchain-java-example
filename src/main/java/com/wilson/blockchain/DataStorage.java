@@ -1,5 +1,6 @@
 package com.wilson.blockchain;
 
+import com.wilson.blockchain.transaction.Transaction;
 import com.wilson.blockchain.transaction.TransactionOutput;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public final class DataStorage {
     private DataStorage() {
     }
 
-    public static int difficulty = 3;
+    public static Transaction genesisTransaction;
     public static ArrayList<Block> blockchain = new ArrayList<>();
     public static HashMap<String, TransactionOutput> UTXOs = new HashMap<>(); //list of all unspent transactions.
 

@@ -16,9 +16,8 @@ import java.security.Security;
  */
 public class BlockchainExample {
 
-    public static Wallet walletTom;
-    public static Wallet walletBob;
-    public static Transaction genesisTransaction;
+    private static Wallet walletTom;
+    private static Wallet walletBob;
 
     public static void main(String[] args) {
         Security.addProvider(new BouncyCastleProvider());
@@ -28,29 +27,32 @@ public class BlockchainExample {
         walletBob = new Wallet();
 
         //create genesis transaction, which sends 100 NoobCoin to walletA:
-        genesisTransaction = new Transaction(
+        DataStorage.genesisTransaction = new Transaction(
                 coinbase.getPublicKey(),
                 walletTom.getPublicKey(),
                 100f,
                 null);
 
-        byte[] genesisTransactionSignature = TransactionUtils.generateSignature(genesisTransaction, coinbase.getPrivateKey());
-        genesisTransaction.setSignature(genesisTransactionSignature);
-        genesisTransaction.setTransactionId("0");
+        byte[] genesisTransactionSignature = TransactionUtils.generateSignature(DataStorage.genesisTransaction, coinbase.getPrivateKey());
+        DataStorage.genesisTransaction.setSignature(genesisTransactionSignature);
+        DataStorage.genesisTransaction.setTransactionId("0");
 
 
-        TransactionOutput transactionOutput = new TransactionOutput(genesisTransaction.getRecipient(), genesisTransaction.getValue(), genesisTransaction.getTransactionId());
-        genesisTransaction.getOutputTransactions().add(transactionOutput);
+        TransactionOutput transactionOutput = new TransactionOutput(
+                DataStorage.genesisTransaction.getRecipient(),
+                DataStorage.genesisTransaction.getValue(),
+                DataStorage.genesisTransaction.getTransactionId());
+        DataStorage.genesisTransaction.getOutputTransactions().add(transactionOutput);
 
         DataStorage.UTXOs.put(
-                genesisTransaction.getOutputTransactions().get(0).getId(),
-                genesisTransaction.getOutputTransactions().get(0)
+                DataStorage.genesisTransaction.getOutputTransactions().get(0).getId(),
+                DataStorage.genesisTransaction.getOutputTransactions().get(0)
         ); //its important to store our first transaction in the UTXOs list.
         System.out.println("Creating and Mining Genesis block... ");
 
         Block genericBlock = new Block("0");
 
-        genericBlock.addTransaction(genesisTransaction);
+        genericBlock.addTransaction(DataStorage.genesisTransaction);
         BlockUtils.addBlock(genericBlock);
 
         System.out.println("walletTom's balance is: " + walletTom.getBalance());
@@ -79,13 +81,15 @@ public class BlockchainExample {
         BlockUtils.addBlock(block3);
         System.out.println("\nwalletTom's balance is: " + walletTom.getBalance());
         System.out.println("walletBob's balance is: " + walletBob.getBalance());
-        BlockUtils.isChainValid();
+
 
         Block block4 = new Block(block3.getHash());
         block4.addTransaction(walletBob.sendFunds(walletTom.getPublicKey(), 10));
         BlockUtils.addBlock(block4);
         System.out.println("\nwalletTom's balance is: " + walletTom.getBalance());
         System.out.println("walletBob's balance is: " + walletBob.getBalance());
+
+        BlockUtils.isChainValid();
 
     }
 }

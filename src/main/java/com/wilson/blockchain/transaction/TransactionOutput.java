@@ -1,6 +1,7 @@
 package com.wilson.blockchain.transaction;
 
-import original.StringUtil;
+import com.wilson.blockchain.BlockUtils;
+import com.wilson.blockchain.WalletUtils;
 
 import java.security.PublicKey;
 
@@ -18,17 +19,7 @@ public class TransactionOutput {
         this.recipient = recipient;
         this.value = value;
         this.parentTransactionId = parentTransactionId;
-        this.id = StringUtil.applySha256(StringUtil.getStringFromKey(recipient) + Float.toString(value) + parentTransactionId);
-
-
-//        TransactionOutputData transactionOutputData = new TransactionOutputData(
-//                WalletUtils.getStringFromKey(recipient),
-//                Float.toString(value),
-//                parentTransactionId
-//        );
-//        String hashData = new Gson().toJson(transactionOutputData);
-//        String hashId = BlockUtils.applySha256(hashData);
-//        this.id = UUID.nameUUIDFromBytes(hashId.getBytes());
+        this.id = BlockUtils.applySha256(WalletUtils.getStringFromKey(recipient) + Float.toString(value) + parentTransactionId);
     }
 
     //Check if coin belongs to you
