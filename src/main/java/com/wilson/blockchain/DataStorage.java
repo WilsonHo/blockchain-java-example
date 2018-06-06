@@ -12,6 +12,7 @@ public final class DataStorage {
     private DataStorage() {
     }
 
+    public static int difficulty = 3;
     public static ArrayList<Block> blockchain = new ArrayList<>();
     public static HashMap<String, TransactionOutput> UTXOs = new HashMap<>(); //list of all unspent transactions.
 

@@ -43,4 +43,8 @@ public class TransactionOutput {
     public float getValue() {
         return value;
     }
+
+    public PublicKey getRecipient() {
+        return recipient;
+    }
 }

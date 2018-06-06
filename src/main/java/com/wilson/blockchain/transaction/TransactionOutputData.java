@@ -15,7 +15,7 @@ public class TransactionOutputData {
 
     }
 
-    public static TransactionOutputData generateTransactionOutputSenderData(String sender,
+    public static TransactionOutputData generateTransactionOutputData(String sender,
                                                                             String leftOver,
                                                                             String  parentTransactionId) {
         return new TransactionOutputData()
@@ -24,17 +24,6 @@ public class TransactionOutputData {
                 .setParentTransactionId(parentTransactionId)
                 .setRecipient("")
                 .setValue("");
-    }
-
-    public static TransactionOutputData generateTransactionOutputRecipientData(String recipient,
-                                                                               String value,
-                                                                               String parentTransactionId) {
-        return new TransactionOutputData()
-                .setSender("")
-                .setLeftOver("")
-                .setParentTransactionId(parentTransactionId)
-                .setRecipient(recipient)
-                .setValue(value);
     }
 
     public String getSender() {

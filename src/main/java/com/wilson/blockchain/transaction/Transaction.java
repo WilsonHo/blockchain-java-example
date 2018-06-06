@@ -61,23 +61,23 @@ public class Transaction {
         this.signature = signature;
     }
 
-//    // returns sum of inputs(UTXOs) values
-//    public float getInputsValue() {
-//        float total = 0;
-//        for (TransactionInput i : inputTransactions) {
-//            if (i.getUtxo() == null)
-//                continue; // if Transaction can't be found skip it
-//            total += i.getUtxo().value;
-//        }
-//        return total;
-//    }
-//
-//    // returns sum of outputs:
-//    public float getOutputsValue() {
-//        float total = 0;
-//        for (TransactionOutput o : outputTransactions) {
-//            total += o.value;
-//        }
-//        return total;
-//    }
+    // returns sum of inputs(UTXOs) values
+    public float getInputsValue() {
+        float total = 0;
+        for (TransactionInput i : inputTransactions) {
+            if (i.getUtxo() == null)
+                continue; // if Transaction can't be found skip it
+            total += i.getUtxo().getValue();
+        }
+        return total;
+    }
+
+    // returns sum of outputs:
+    public float getOutputsValue() {
+        float total = 0;
+        for (TransactionOutput o : outputTransactions) {
+            total += o.getValue();
+        }
+        return total;
+    }
 }

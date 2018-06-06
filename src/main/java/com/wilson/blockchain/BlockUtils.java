@@ -6,11 +6,9 @@ import com.wilson.blockchain.transaction.TransactionOutput;
 import com.wilson.blockchain.transaction.TransactionUtils;
 
 import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.wilson.blockchain.DataStorage.blockchain;
-import static com.wilson.entrypoint.BlockchainExample.difficulty;
 import static com.wilson.entrypoint.BlockchainExample.genesisTransaction;
 
 /**
@@ -48,10 +46,10 @@ public final class BlockUtils {
         return BlockUtils.applySha256(inputData);
     }
 
-    public static Boolean isChainValid(ArrayList<Block> blockchain, int difficulty) {
+    public static Boolean isChainValid() {
         Block currentBlock;
         Block previousBlock;
-        String hashTarget = new String(new char[difficulty]).replace('\0', '0');
+        String hashTarget = new String(new char[DataStorage.difficulty]).replace('\0', '0');
 
         HashMap<String, TransactionOutput> tempUTXOs = new HashMap<>(); //a temporary working list of unspent transactions at a given block state.
         tempUTXOs.put(genesisTransaction.getOutputTransactions().get(0).getId(),
@@ -72,7 +70,7 @@ public final class BlockUtils {
             }
 
             //check if hash is solved
-            if (!currentBlock.getHash().substring(0, difficulty).equals(hashTarget)) {
+            if (!currentBlock.getHash().substring(0, DataStorage.difficulty).equals(hashTarget)) {
                 System.out.println("This block hasn't been mined");
                 return false;
             }
@@ -86,8 +84,7 @@ public final class BlockUtils {
                     System.out.println("#Signature on Transaction(" + t + ") is Invalid");
                     return false;
                 }
-                if (TransactionUtils.getInputsValue(currentTransaction)
-                        != TransactionUtils.getOutputsValue(currentTransaction)) {
+                if (currentTransaction.getInputsValue() != currentTransaction.getOutputsValue()) {
                     System.out.println("#Inputs are note equal to outputs on Transaction(" + t + ")");
                     return false;
                 }
@@ -112,19 +109,18 @@ public final class BlockUtils {
                     tempUTXOs.put(output.getId(), output);
                 }
 
-//                if (currentTransaction.getOutputTransactions().get(0).g != currentTransaction.reciepient) {
-//                    System.out.println("#Transaction(" + t + ") output reciepient is not who it should be");
-//                    return false;
-//                }
-//                if (currentTransaction.outputs.get(1).reciepient != currentTransaction.sender) {
-//                    System.out.println("#Transaction(" + t + ") output 'change' is not sender.");
-//                    return false;
-//                }
-
+                if (currentTransaction.getOutputTransactions().get(0).getRecipient() != currentTransaction.getRecipient()) {
+                    System.out.println("#Transaction(" + t + ") output reciepient is not who it should be");
+                    return false;
+                }
+                if (currentTransaction.getOutputTransactions().get(1).getRecipient() != currentTransaction.getSender()) {
+                    System.out.println("#Transaction(" + t + ") output 'change' is not sender.");
+                    return false;
+                }
             }
 
-
         }
+        System.out.println("Blockchain is valid");
         return true;
     }
 
@@ -139,7 +135,7 @@ public final class BlockUtils {
     }
 
     public static void addBlock(Block newBlock) {
-        mineBlock(newBlock, difficulty);
+        mineBlock(newBlock, DataStorage.difficulty);
         blockchain.add(newBlock);
     }
 
