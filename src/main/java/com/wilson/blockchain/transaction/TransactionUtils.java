@@ -74,11 +74,15 @@ public final class TransactionUtils {
         transaction.setTransactionId(calculateHash(transaction));
 
         transaction.getOutputTransactions().add(
-                new TransactionOutputRecipient(transaction)
+                new TransactionOutput(transaction.getRecipient(),
+                        transaction.getValue(),
+                        transaction.getTransactionId())
         ); // send value to recipient
 
         transaction.getOutputTransactions().add(
-                new TransactionOutputSender(transaction, leftOver)); // send the left over 'change' back to sender
+                new TransactionOutput(transaction.getSender(),
+                        leftOver,
+                        transaction.getTransactionId())); // send the left over 'change' back to sender
 
         // add outputs to Unspent list
         for (TransactionOutput output : transaction.getOutputTransactions()) {

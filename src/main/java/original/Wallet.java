@@ -58,7 +58,7 @@ public class Wallet {
             return null;
         }
         // create array list of inputs
-        ArrayList<TransactionInput> inputs = new ArrayList<TransactionInput>();
+        ArrayList<TransactionInput> inputs = new ArrayList<>();
 
         float total = 0;
         for (Map.Entry<String, TransactionOutput> item : this.UTXOs.entrySet()) {
