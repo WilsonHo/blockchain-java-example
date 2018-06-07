@@ -73,6 +73,7 @@ public final class TransactionUtils {
         float leftOver = inputValue - transaction.getValue(); // get value of inputs then the left over change:
         transaction.setTransactionId(calculateHash(transaction));
 
+
         transaction.getOutputTransactions().add(
                 new TransactionOutput(transaction.getRecipient(),
                         transaction.getValue(),
